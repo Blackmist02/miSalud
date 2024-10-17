@@ -1,0 +1,31 @@
+<ion-content [fullscreen]="true">
+  <div class="boxLog">
+  <ion-grid>
+    <!-- Login, nombre de usuario -->
+    <ion-row class="ion-justify-content-center ">
+      <ion-col size="11">
+        <ion-item class="nombre_user">
+          <ion-label position="floating" > <ion-icon name="person-outline"></ion-icon> RUN</ion-label>
+          <ion-input type="user" ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="11" >
+        <ion-item>
+          <ion-label position="floating"><ion-icon name="key-outline"></ion-icon> Contraseña</ion-label>
+          <ion-input type="password" ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+    <ion-router-link routerLink="/recuperar-contrasenia" style="margin-top:10px; margin-bottom:10px">¿Olvidaste tu contraseña?</ion-router-link> 
+  </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="4">
+        <ion-button expand="block" >INGRESAR</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+</ion-content>
