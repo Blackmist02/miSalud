@@ -1,0 +1,7 @@
+{
+  "name": "miSalud",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
