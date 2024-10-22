@@ -1,0 +1,44 @@
+<ion-content>
+  <div>
+    <ion-card class="user-info">
+      <ion-card-header>
+        <ion-card-title>Bienvenido/a</ion-card-title>
+      </ion-card-header>
+      <ion-card-content >
+        <ion-item *ngIf="usuarioLogueado">
+          <ion-row>
+            <ion-col size="1">
+              
+            </ion-col>
+            <ion-col size="15">
+              <p><strong></strong> {{ usuarioLogueado.nombre }} {{ usuarioLogueado.apellido }}</p>
+              <div>
+                <p><strong>Edad: {{usuarioLogueado.edad}}</strong> años</p>
+              </div>
+              
+              <p><strong>  Rut: {{ usuarioLogueado.run }}</strong></p>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-title>Calendario de medicamentos </ion-title>  
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let dia of diasSemana">
+        <ion-card class="tarjeta">
+          <ion-card-header>
+            <ion-card-title class="tarjeta">{{ dia }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div *ngFor="let receta of getMedicamentosPorDia(dia)">
+              <p>{{ receta.nombre }} - {{ receta.hora }}</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

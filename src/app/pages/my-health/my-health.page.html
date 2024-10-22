@@ -1,0 +1,21 @@
+<ion-content>
+  <img class="imagen"  src="assets/img/healt.png" alt="salud">
+
+  <ion-card class="user-info">
+  <ion-card-header>
+    <ion-card-title>Mi Salud</ion-card-title>
+  </ion-card-header>
+  <ion-card-content *ngIf="datosSalud">
+    <ion-item>
+      Peso: {{ datosSalud.peso }} Kg
+    </ion-item> 
+    <ion-item>
+      Altura: {{ datosSalud.altura }} Metros
+    </ion-item>
+    <ion-item>
+      IMC: {{ datosSalud.imc }}
+    </ion-item>
+  </ion-card-content>
+  
+  </ion-card>
+</ion-content>

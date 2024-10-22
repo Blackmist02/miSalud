@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-title>Historial Clinico</ion-title>
+  <ion-card>
+    <ion-row>
+      <ion-col *ngFor="let datosHistorial of historial">
+        <ion-card-header>
+          <ion-card-title>Fecha: {{ datosHistorial.fecha | date:'yyyy/MM/dd' }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Diagnostico: {{ datosHistorial.descripcion }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Tratamiento: {{ datosHistorial.tratamiento}}</ion-label>
+          </ion-item>
+          <ion-item *ngIf="datosHistorial.medicamento_nombre">
+            <ion-label>Medicamento: {{ datosHistorial.medicamento_nombre }}</ion-label>
+          </ion-item>
+        </ion-card-content>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>
