@@ -1,0 +1,81 @@
+<ion-content>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+
+
+  <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+    <!-- RUN -->
+    <ion-item>
+      <ion-label position="floating">RUN</ion-label>
+      <ion-input formControlName="run"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('run')?.hasError('required') && registerForm.get('run')?.touched">
+      RUN es obligatorio.
+    </ion-text>
+    <ion-text color="danger" *ngIf="registerForm.get('run')?.hasError('pattern') && registerForm.get('run')?.touched">
+      Formato de RUN inválido.
+    </ion-text>
+    <ion-text color="danger" *ngIf="registerForm.get('run')?.hasError('runNoDisponible') && registerForm.get('run')?.touched">
+      Este RUN ya está registrado.
+    </ion-text>
+    
+
+    <!-- Nombre -->
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input formControlName="nombre"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('nombre')?.hasError('required') && registerForm.get('nombre')?.touched">
+      Nombre es obligatorio.
+    </ion-text>
+
+    <!-- Apellido -->
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input formControlName="apellido"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('apellido')?.hasError('required') && registerForm.get('apellido')?.touched">
+      Apellido es obligatorio.
+    </ion-text>
+
+    <!-- Edad -->
+    <ion-item>
+      <ion-label position="floating">Edad</ion-label>
+      <ion-input formControlName="edad" type="number"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('edad')?.hasError('required') && registerForm.get('edad')?.touched">
+      Edad es obligatoria.
+    </ion-text>
+    <ion-text color="danger" *ngIf="registerForm.get('edad')?.hasError('min') && registerForm.get('edad')?.touched">
+      Debes ser mayor de 18 años.
+    </ion-text>
+
+    <!-- Email -->
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email" type="email"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
+      Email es obligatorio.
+    </ion-text>
+    <ion-text color="danger" *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">
+      Formato de email inválido.
+    </ion-text>
+
+    <!-- Password -->
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+      Contraseña es obligatoria.
+    </ion-text>
+    <ion-text color="danger" *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
+      La contraseña debe tener al menos 6 caracteres.
+    </ion-text>
+
+    <!-- Botón de Enviar -->
+    <ion-button class="boton" expand="full" type="submit" [disabled]="registerForm.invalid">Registrarse</ion-button>
+  </form>
+</ion-content>

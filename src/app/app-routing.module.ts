@@ -3,10 +3,14 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './pages/tabs/tabs.page';
 
 const routes: Routes = [
+  { 
+    path: '', 
+    redirectTo: 'login', 
+    pathMatch: 'full' 
+  },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
+    path: 'register',
+    loadChildren: () => import('./pages/signup/signup-routing.module').then(m => m.SignupPageRoutingModule),
   },
   {
     path: 'login',
@@ -43,10 +47,17 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'signup',
+    loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupPageModule),
+  },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
+
+
