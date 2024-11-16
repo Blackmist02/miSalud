@@ -1,0 +1,290 @@
+use mi_base_de_datos;
+
+drop table medicamento cascade;
+drop table receta cascade;
+drop table cita cascade;
+drop table examen cascade;
+drop table resultado_examen cascade;
+drop table salud_usuario cascade;
+drop table historial_clinico cascade;
+drop table historial_medicamentos cascade;
+drop table eventos cascade;
+drop table usuarios cascade;
+drop table especialidad cascade;
+drop table medico cascade;
+drop table horas_disponibles cascade;
+drop table horas_reservadas cascade;
+
+
+create table usuarios(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    run VARCHAR(10) NOT NULL,
+    nombre VARCHAR(30) NOT NULL,
+    apellido VARCHAR(30) NOT NULL,
+    edad INT,
+    email VARCHAR(30) NOT NULL,
+    password VARCHAR(18) NOT NULL
+);
+
+create table especialidad(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+create table medico(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    run VARCHAR(100) NOT NULL,
+    especialidad_id INT,
+    FOREIGN KEY (especialidad_id) REFERENCES especialidad(id)
+);
+
+create table medicamento(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE receta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    medicamento_id INT,
+    dia_semana VARCHAR(10), -- Guardar el día (Lunes, Martes, etc.)
+    hora TIME,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (medicamento_id) REFERENCES medicamento(id)
+);
+
+
+create table cita(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    medico_id INT,
+    fecha DATE,
+    hora TIME,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (medico_id) REFERENCES medico(id)
+);
+
+create table examen(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    descripcion TEXT
+);
+
+
+create table resultado_examen(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    examen_id INT,
+    usuario_id INT,
+    resultado TEXT,
+    FOREIGN KEY (examen_id) REFERENCES examen(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+create table salud_usuario(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    peso DECIMAL(5,2),
+    altura DECIMAL(5,2),
+    imc DECIMAL(5,2),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE historial_clinico (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    fecha DATE,
+    diagnostico INT,
+    descripcion TEXT,
+    tratamiento TEXT,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (diagnostico) REFERENCES examen(id)
+);
+
+
+CREATE TABLE historial_medicamentos (
+    historial_id INT,
+    medicamento_id INT,
+    PRIMARY KEY (historial_id, medicamento_id),
+    FOREIGN KEY (historial_id) REFERENCES historial_clinico(id),
+    FOREIGN KEY (medicamento_id) REFERENCES medicamento(id)
+);
+
+CREATE TABLE eventos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(255),
+    datos JSON
+);
+
+create  table horas_disponibles(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    medico_id INT,
+    dia_semana VARCHAR(10),
+    hora_inicio TIME,
+    hora_fin TIME,
+    FOREIGN KEY (medico_id) REFERENCES medico(id)
+);
+
+create table horas_reservadas(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    medico_id INT,
+    dia_semana VARCHAR(10),
+    hora_inicio TIME,
+    FOREIGN KEY (medico_id) REFERENCES medico(id)
+);
+
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('12345678-9', 'Juan', 'Perez', NULL, 'juan.perez@example.com', 'password1');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('98765432-1', 'Maria', 'Gomez', NULL, 'maria.gomez@example.com', 'password2');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('11223344-5', 'Carlos', 'Lopez', NULL, 'carlos.lopez@example.com', 'password3');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('55667788-6', 'Ana', 'Martinez', NULL, 'ana.martinez@example.com', 'password4');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('99887766-7', 'Luis', 'Fernandez', NULL, 'luis.fernandez@example.com', 'password5');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('11111111-1', 'Laura', 'Diaz', NULL, 'laura.diaz@example.com', 'password6');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('22222222-2', 'Pedro', 'Sanchez', NULL, 'pedro.sanchez@example.com', 'password7');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('33333333-3', 'Sofia', 'Ramirez', NULL, 'sofia.ramirez@example.com', 'password8');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('44444444-4', 'Miguel', 'Torres', NULL, 'miguel.torres@example.com', 'password9');
+INSERT INTO usuarios (run, nombre, apellido, edad, email, password) VALUES ('55555555-5', 'Elena', 'Vega', NULL, 'elena.vega@example.com', 'password10');
+
+INSERT INTO especialidad (nombre) VALUES ('Cardiología');
+INSERT INTO especialidad (nombre) VALUES ('Neurología');
+INSERT INTO especialidad (nombre) VALUES ('Pediatría');
+INSERT INTO especialidad (nombre) VALUES ('Dermatología');
+INSERT INTO especialidad (nombre) VALUES ('Ginecología');
+INSERT INTO especialidad (nombre) VALUES ('Oftalmología');
+INSERT INTO especialidad (nombre) VALUES ('Psiquiatría');
+INSERT INTO especialidad (nombre) VALUES ('Oncología');
+INSERT INTO especialidad (nombre) VALUES ('Urología');
+INSERT INTO especialidad (nombre) VALUES ('Endocrinología');
+INSERT INTO especialidad (nombre) VALUES ('Gastroenterología');
+INSERT INTO especialidad (nombre) VALUES ('Neumología');
+INSERT INTO especialidad (nombre) VALUES ('Nefrología');
+INSERT INTO especialidad (nombre) VALUES ('Reumatología');
+INSERT INTO especialidad (nombre) VALUES ('Hematología');
+INSERT INTO especialidad (nombre) VALUES ('Infectología');
+INSERT INTO especialidad (nombre) VALUES ('Otorrinolaringología');
+INSERT INTO especialidad (nombre) VALUES ('Traumatología');
+INSERT INTO especialidad (nombre) VALUES ('Cirugía General');
+INSERT INTO especialidad (nombre) VALUES ('Medicina Interna');
+
+
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Juan', 'Perez', 'juan.perez@example.com', 'password1', '12345678-9', 1);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Diego', 'Valderrama', 'diego.valderrama@example.com', 'password1', '12345678-1', 1);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Maria', 'Gomez', 'maria.gomez@example.com', 'password2', '98765432-1', 2);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Carlos', 'Lopez', 'carlos.lopez@example.com', 'password3', '11223344-5', 3);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Ana', 'Martinez', 'ana.martinez@example.com', 'password4', '55667788-6', 4);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Luis', 'Fernandez', 'luis.fernandez@example.com', 'password5', '99887766-7', 5);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Laura', 'Diaz', 'laura.diaz@example.com', 'password6', '22334455-6', 6);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Pedro', 'Sanchez', 'pedro.sanchez@example.com', 'password7', '33445566-7', 7);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Sofia', 'Ramirez', 'sofia.ramirez@example.com', 'password8', '44556677-8', 8);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Miguel', 'Torres', 'miguel.torres@example.com', 'password9', '55667788-9', 9);
+INSERT INTO medico (nombre, apellido, email, password, run, especialidad_id) VALUES ('Elena', 'Vega', 'elena.vega@example.com', 'password10', '66778899-0', 10);
+
+
+INSERT INTO medicamento (nombre) VALUES ('Paracetamol');
+INSERT INTO medicamento (nombre) VALUES ('Ibuprofeno');
+INSERT INTO medicamento (nombre) VALUES ('Amoxicilina');
+INSERT INTO medicamento (nombre) VALUES ('Omeprazol');
+INSERT INTO medicamento (nombre) VALUES ('Metformina');
+INSERT INTO medicamento (nombre) VALUES ('Aspirina');
+INSERT INTO medicamento (nombre) VALUES ('Loratadina');
+INSERT INTO medicamento (nombre) VALUES ('Simvastatina');
+INSERT INTO medicamento (nombre) VALUES ('Levotiroxina');
+INSERT INTO medicamento (nombre) VALUES ('Atorvastatina');
+
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (1, 1, 'Lunes', '08:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (1, 6, 'Sabado', '13:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (1, 2, 'Martes', '09:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (2, 3, 'Miercoles', '10:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (3, 4, 'Jueves', '11:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (4, 5, 'Viernes', '12:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (5, 7, 'Domingo', '14:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (6, 8, 'Lunes', '15:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (7, 9, 'Martes', '16:00:00');
+INSERT INTO receta (usuario_id, medicamento_id, dia_semana, hora) VALUES (8, 10, 'Miercoles', '17:00:00');INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (1, 1, '2023-10-01', '09:00:00');
+
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (2, 2, '2023-10-02', '10:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (3, 3, '2023-10-03', '11:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (4, 4, '2023-10-04', '12:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (5, 5, '2023-10-05', '13:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (6, 6, '2023-10-06', '14:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (7, 7, '2023-10-07', '15:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (8, 8, '2023-10-08', '16:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (9, 9, '2023-10-09', '17:00:00');
+INSERT INTO cita (usuario_id, medico_id, fecha, hora) VALUES (10, 10, '2023-10-10', '18:00:00');
+
+INSERT INTO examen (nombre, descripcion) VALUES ('Examen de Sangre', 'Análisis de sangre completo');
+INSERT INTO examen (nombre, descripcion) VALUES ('Examen de Orina', 'Análisis de orina completo');
+INSERT INTO examen (nombre, descripcion) VALUES ('Radiografía', 'Radiografía de tórax');
+INSERT INTO examen (nombre, descripcion) VALUES ('Electrocardiograma', 'ECG para evaluar el corazón');
+INSERT INTO examen (nombre, descripcion) VALUES ('Ecografía', 'Ecografía abdominal');
+INSERT INTO examen (nombre, descripcion) VALUES ('Resonancia Magnética', 'RMN de cerebro');
+INSERT INTO examen (nombre, descripcion) VALUES ('Tomografía', 'TAC de abdomen');
+INSERT INTO examen (nombre, descripcion) VALUES ('Prueba de Esfuerzo', 'Prueba de esfuerzo cardíaco');
+INSERT INTO examen (nombre, descripcion) VALUES ('Examen de Vista', 'Evaluación de la visión');
+INSERT INTO examen (nombre, descripcion) VALUES ('Examen de Audición', 'Evaluación de la audición');
+
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (1, 1, 'Normal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (2, 2, 'Normal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (3, 3, 'Anormal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (4, 4, 'Normal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (5, 5, 'Anormal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (6, 6, 'Normal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (7, 7, 'Normal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (8, 8, 'Anormal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (9, 9, 'Normal');
+INSERT INTO resultado_examen (examen_id, usuario_id, resultado) VALUES (10,10, 'Normal');
+
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (1, 70.5, 1.75, 23.0);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (2, 65.0, 1.68, 23.0);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (3, 80.0, 1.80, 24.7);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (4, 55.0, 1.60, 21.5);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (5, 90.0, 1.85, 26.3);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (6, 75.0, 1.70, 25.9);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (7, 68.0, 1.72, 23.0);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (8, 77.0, 1.78, 24.3);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (9, 85.0, 1.82, 25.6);
+INSERT INTO salud_usuario (usuario_id, peso, altura, imc) VALUES (10, 60.0, 1.65, 22.0);
+
+
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (1, '2023-01-01', 1, 'Diagnóstico de hipertensión', 'Tratamiento con antihipertensivos');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (2, '2023-02-01', 2, 'Diagnóstico de diabetes tipo 2', 'Tratamiento con insulina y dieta controlada');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (3, '2023-03-01', 3, 'Diagnóstico de asma', 'Tratamiento con inhaladores y broncodilatadores');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (4, '2023-04-01', 4, 'Diagnóstico de artritis reumatoide', 'Tratamiento con antiinflamatorios y fisioterapia');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (5, '2023-05-01', 5, 'Diagnóstico de migraña crónica', 'Tratamiento con analgésicos y terapia preventiva');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (6, '2023-06-01', 6, 'Diagnóstico de insuficiencia cardíaca', 'Tratamiento con diuréticos y betabloqueantes');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (7, '2023-07-01', 7, 'Diagnóstico de depresión mayor', 'Tratamiento con antidepresivos y terapia psicológica');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (8, '2023-08-01', 8, 'Diagnóstico de hipotiroidismo', 'Tratamiento con levotiroxina');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (9, '2023-09-01', 9, 'Diagnóstico de enfermedad pulmonar obstructiva crónica (EPOC)', 'Tratamiento con broncodilatadores y oxigenoterapia');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (10, '2023-10-01', 10, 'Diagnóstico de anemia ferropénica', 'Tratamiento con suplementos de hierro y dieta rica en hierro');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (1, '2023-04-01', 4, 'Diagnóstico de artritis reumatoide', 'Tratamiento con antiinflamatorios y fisioterapia');
+INSERT INTO historial_clinico (usuario_id, fecha, diagnostico, descripcion, tratamiento) VALUES (2, '2023-11-01', 5, 'Diagnóstico de hipertensión', 'Tratamiento con antihipertensivos');
+
+
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (1, 1);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (2, 2);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (3, 3);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (4, 4);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (5, 5);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (6, 6);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (7, 7);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (8, 8);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (9, 9);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (10, 10);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (11, 4);
+INSERT INTO historial_medicamentos (historial_id, medicamento_id) VALUES (12, 5);
+
+
+insert into horas_disponibles (medico_id, dia_semana, hora_inicio, hora_fin) values (1, 'Lunes', '08:00:00', '18:00:00');
+insert into horas_disponibles (medico_id, dia_semana, hora_inicio, hora_fin) values (1, 'Martes', '08:00:00', '18:00:00');
+insert into horas_disponibles (medico_id, dia_semana, hora_inicio, hora_fin) values (1, 'Miercoles', '08:00:00', '18:00:00');
+insert into horas_disponibles (medico_id, dia_semana, hora_inicio, hora_fin) values (1, 'Jueves', '08:00:00', '18:00:00');
+insert into horas_disponibles (medico_id, dia_semana, hora_inicio, hora_fin) values (1, 'Viernes', '08:00:00', '18:00:00');
+insert into horas_disponibles (medico_id, dia_semana, hora_inicio, hora_fin) values (1, 'Sabado', '08:00:00', '18:00:00');
+insert into horas_disponibles (medico_id, dia_semana, hora_inicio, hora_fin) values (1, 'Domingo', '08:00:00', '18:00:00');
+
+
+insert into horas_reservadas (medico_id, dia_semana, hora_inicio) values (1, 'Lunes', '10:00:00');
+insert into horas_reservadas (medico_id, dia_semana, hora_inicio) values (1, 'Martes', '11:00:00');
+insert into horas_reservadas (medico_id, dia_semana, hora_inicio) values (1, 'Miercoles', '12:00:00');
