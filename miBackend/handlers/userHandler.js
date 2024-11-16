@@ -1,6 +1,4 @@
 const eventEmitter = require('./event.js');
+const db = require('../db'); // Suponiendo que tienes una conexión a base de datos
 
-eventEmitter.on('userRegistered', (newUser) => {
-    console.log('Nuevo usuario registrado:', newUser);
-    //revisar como utilizar node mailer para enviar un correo de bienvenida
-});
+console.log('emision de evento');

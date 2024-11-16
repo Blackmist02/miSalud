@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -10,7 +11,7 @@ export class MyHealthPage implements OnInit {
   usuarioLogueado: any = null;
   datosSalud: any = {};
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService, private http: HttpClient) { }
 
   ngOnInit() {
     // Obtener el usuario logueado desde localStorage
@@ -18,7 +19,7 @@ export class MyHealthPage implements OnInit {
     if (usuarioString) {
       this.usuarioLogueado = JSON.parse(usuarioString); // Asigna a la propiedad de clase
       console.log('Usuario logueado:', this.usuarioLogueado);
-
+      this.sendEmail();
       // obtener la salud del usuario logueado
       this.usuarioService.miSalud(this.usuarioLogueado.id).subscribe((data: any) => {
         console.log('Salud obtenida:', data);
@@ -31,6 +32,12 @@ export class MyHealthPage implements OnInit {
     } else {
       console.log('No hay usuario logueado en localStorage');
     }
+  }
+
+  sendEmail() {
+    //llamada a evento de envio de correo
+    console.log('Enviando correo...');
+    
   }
 
 }

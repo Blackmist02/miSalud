@@ -36,6 +36,42 @@ ion-item{
     --border-radius: 13px;
 }
 
+.calendar {
+    ion-grid {
+    width: 100%;
+    }
+
+    ion-row {
+    text-align: center;
+    }
+
+    ion-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+
+    ion-button {
+        --border-radius: 50%; /* Botones redondos */
+        --padding-start: 8px;
+        --padding-end: 8px;
+        font-size: 14px; /* Ajusta el tamaño de la fuente */
+        width: 40px; /* Ajusta el tamaño del botón */
+        height: 40px;
+
+        &.selected {
+            background-color: var(--ion-color-primary);
+            color: #fff;
+        }
+
+        &.unselected {
+            background-color: var(--ion-color-light);
+            color: var(--ion-color-dark);
+        }
+    }
+    }
+}
+
 @media screen and (min-width: 768px) {
     .boxLog{
         padding-left:33% ;
