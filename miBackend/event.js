@@ -1,5 +1,10 @@
-const EventEmitter = require('events'); //emite y escucha eventos de toda la app
-class AppEventEmitter extends EventEmitter {}
-const appEvents = new AppEventEmitter();
+// events.js
+const EventEmitter = require('events');
+const eventEmitter = new EventEmitter();
 
-module.exports = appEvents;
+// Disparar evento de login
+function loginUser(data) {
+    eventEmitter.emit('user.login', data);
+}
+
+module.exports = { eventEmitter, loginUser };

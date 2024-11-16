@@ -1,5 +1,9 @@
 // server.js
 const express = require('express');
+const nodemailer = require('nodemailer');
+const { enviarCorreo } = require('./events/envioCorreo');
+
+
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -22,6 +26,15 @@ db.connect(err => {
   if (err) throw err;
   console.log('Conectado a MySQL');
 });
+
+//Envio de correo
+app.post('/enviar-correo', async (req, res) => {
+  const datosCorreo = req.body;
+  const respuesta = await enviarCorreo(datosCorreo);
+  res.json(respuesta);
+});
+
+
 
 app.get('/api/usuarios/checkRun/:run', (req, res) => {
   const { run } = req.params;
@@ -53,10 +66,7 @@ app.post('/api/usuarios', (req, res) => {
     eventEmitter.emit('userRegistered', userWithId);
   });
 });
-
-
-
-
+//---------------------------------------------------------
 //---------------------------------------------------------
 
 
@@ -181,6 +191,62 @@ db.query(query, [usuarioId], (err, result) => {
     }
     res.json(result);
 });
+});
+
+// Obtener médico filtrado por especialidad
+app.get('/api/medico/:especialidad_id', (req, res) => {
+  const especialidadId = req.params.especialidad_id;
+  const query = 'SELECT * FROM medico WHERE especialidad_id = ?';
+  db.query(query, [especialidadId], (err, result) => {
+    if (err) throw err;
+    medico = result.map(medico => ({
+      id: medico.id,
+      nombre: medico.nombre,
+      apellido: medico.apellido,
+      especialidad_id: medico.especialidad_id
+    }));
+    res.json(medico);
+  });
+});
+
+//obtener especialidades
+app.get('/api/especialidad', (req, res) => {
+  db.query('SELECT * FROM especialidad', (err, results) => {
+    if (err) throw err;
+    especialidad = results.map(especialidad => ({
+      id: especialidad.id,
+      nombre: especialidad.nombre
+    }));
+    res.json(especialidad);
+  });
+});
+
+//Obtener horas reservadas de un medico y mostrar sus horas disponibles
+app.get('/api/horas_reservadas/:medico_id', (req, res) => {
+  const medicoId = req.params.medico_id;
+  const query = 'SELECT * FROM horas_reservadas WHERE medico_id = ?';
+  db.query(query, [medicoId], (err, result) => {
+    if (err) throw err;
+    hora_Reservada = result.map(hora_Reservada => ({
+      id: hora_Reservada.id,
+      dia_de_la_semana: hora_Reservada.dia_semana,
+      hora_inicio: hora_Reservada.hora_inicio,
+      hora_fin: hora_Reservada.hora_fin,
+      medico_id: hora_Reservada.medico_id
+    }));
+    res.json(hora_Reservada);
+  });
+});
+
+
+//crear una cita
+app.post('/api/horas_reservadas', (req, res) => {
+  const nuevaHoraReservada = req.body;
+  db.query('INSERT INTO horas_reservadas SET ?', nuevaHoraReservada, (err, result) => {
+    if (err) throw err;
+    console.log('Hora reservada:', nuevaHoraReservada);
+    res.json({ id: result.insertId, ...nuevaHoraReservada });
+  });
 });
 
 

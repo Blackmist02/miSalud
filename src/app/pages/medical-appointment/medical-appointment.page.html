@@ -1,13 +1,48 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>medical-appointment</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <!-- Selección del médico y la especialidad -->
+  <ion-item>
+    <ion-label>Especialidad</ion-label>
+    <ion-select [(ngModel)]="selectedSpecialty" (ionChange)="loadDoctors()">
+      <ion-select-option *ngFor="let specialty of specialties" [value]="specialty.id">
+        {{ specialty.nombre }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">medical-appointment</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item>
+    <ion-label>Médico</ion-label>
+    <ion-select [(ngModel)]="selectedDoctor">
+      <ion-select-option *ngFor="let doctor of doctors" [value]="doctor.id">
+        {{ doctor.nombre }} {{ doctor.apellido }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+<!-- Calendario -->
+<div class="calendar">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1.7" *ngFor="let day of daysOfWeek">{{ day }}</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let week of calendar">
+      <ion-col size="1.7" *ngFor="let day of week" (click)="selectDate(day)">
+        <ion-button size="very small" expand="block" *ngIf="day" [color]="isSelected(day) ? 'primary' : 'light'">
+          {{ day | date: 'dd' }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+
+  <!-- Horarios disponibles -->
+  <ion-item *ngIf="selectedDate">
+    <ion-label>Selecciona un horario</ion-label>
+    <ion-select [(ngModel)]="selectedTime">
+      <ion-select-option *ngFor="let time of horasDisponibles" [value]="time">
+        {{ time }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="full" (click)="bookAppointment()">Agendar Cita</ion-button>
 </ion-content>
