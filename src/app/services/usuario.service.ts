@@ -78,6 +78,11 @@ checkRun(run: string): Observable<any> {
   gethorasDisponibles(idMedico: string, fecha: string): Promise<any> {
     return this.http.get(`${this.apiUrlAvailableTimes}/${idMedico}/${fecha}`).toPromise();
   }
+
+  getHorasReservadas(idMedico: string, date: string): Promise<any> {
+    return this.http.get(`${this.apiUrlAvailableTimes}/${idMedico}/${date}`).toPromise();
+  }
+
 }
 
 
