@@ -229,9 +229,8 @@ app.get('/api/horas_reservadas/:medico_id', (req, res) => {
     if (err) throw err;
     hora_Reservada = result.map(hora_Reservada => ({
       id: hora_Reservada.id,
-      dia_de_la_semana: hora_Reservada.dia_semana,
+      fecha: hora_Reservada.fecha,
       hora_inicio: hora_Reservada.hora_inicio,
-      hora_fin: hora_Reservada.hora_fin,
       medico_id: hora_Reservada.medico_id
     }));
     res.json(hora_Reservada);
@@ -246,6 +245,18 @@ app.post('/api/horas_reservadas', (req, res) => {
     if (err) throw err;
     console.log('Hora reservada:', nuevaHoraReservada);
     res.json({ id: result.insertId, ...nuevaHoraReservada });
+  });
+});
+
+app.get('/api/horas_reservadas/:medico_id/:fecha', (req, res) => {
+  const medico_id = req.params.medico_id;
+  const fecha = req.params.fecha;
+  //logica para obtener las horas disponibles 
+  const query = `SELECT * FROM horas_reservadas WHERE medico_id = ? AND fecha = ?`;
+  db.query(query, [medico_id, fecha], (err, result) => {
+    if (err) throw err;
+    console.log('Resultado:', result);
+    res.json(result);
   });
 });
 

@@ -38,7 +38,7 @@
   <ion-item *ngIf="selectedDate">
     <ion-label>Selecciona un horario</ion-label>
     <ion-select [(ngModel)]="selectedTime">
-      <ion-select-option *ngFor="let time of horasDisponibles" [value]="time">
+      <ion-select-option *ngFor="let time of availableTimes" [value]="time">
         {{ time }}
       </ion-select-option>
     </ion-select>
